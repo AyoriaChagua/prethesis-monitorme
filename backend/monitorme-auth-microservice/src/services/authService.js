@@ -21,7 +21,7 @@ const signUp = async ({ username, email, password, roles }) => {
   const savedUser = await newUser.save();
 
   const token = jwt.sign({ id: savedUser._id }, JWT_SECRET, {
-    expiresIn: 86400, //un dia de expiracion
+    expiresIn: 86400, //a day
   });
 
   return token;
