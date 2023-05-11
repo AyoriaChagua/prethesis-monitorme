@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: nodejs
+    container_name: nodejs
+    restart: unless-stopped
+    env_file: .env
+    depends_on:
+      - mongo
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    environment:
+      - MONGODB_URI=$MONGODB_URI
+      - PORT=$PORT
+
+  mongo:
+    image: mongo:4.4
+    container_name: mongo
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MONGO_INITDB_DATABASE=monitormebd
+    volumes:     
+      - dbdata:/data/db
+    networks:
+      - app-network 
+
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+  node_modules: 
